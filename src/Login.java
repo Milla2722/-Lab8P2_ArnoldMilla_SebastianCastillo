@@ -1,5 +1,10 @@
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JFrame {
 
@@ -84,6 +89,11 @@ public class Login extends javax.swing.JFrame {
         chb_Administrador_Registrar.setText("Administrador");
 
         bt_registrar_Registrar.setText("Registrar");
+        bt_registrar_Registrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bt_registrar_RegistrarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -232,6 +242,11 @@ public class Login extends javax.swing.JFrame {
         jLabel8.setText("Rondas");
 
         bt_crearTorney_crearTorney.setText("Crear");
+        bt_crearTorney_crearTorney.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bt_crearTorney_crearTorneyMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -298,7 +313,7 @@ public class Login extends javax.swing.JFrame {
         jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("Torneos Ganados");
 
-        jl_torneosGanados_menuParticipante.setModel(DefaultListModel());
+        jl_torneosGanados_menuParticipante.setModel(new DefaultListModel());
         jScrollPane4.setViewportView(jl_torneosGanados_menuParticipante);
 
         jl_torneosDisp_menuParticipante.setModel(new DefaultListModel());
@@ -456,9 +471,40 @@ public class Login extends javax.swing.JFrame {
         jd_Registrar.setVisible(true);
     }//GEN-LAST:event_jb_RegistrarMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
+    private void bt_crearTorney_crearTorneyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_crearTorney_crearTorneyMouseClicked
+        Torneo t=new Torneo(tf_nombreTorneo_crearTorney.getText(),true ,false , part);
+    }//GEN-LAST:event_bt_crearTorney_crearTorneyMouseClicked
+
+    private void bt_registrar_RegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_registrar_RegistrarMouseClicked
+        if(chb_participante_Registrar.isSelected()){
+            Participante p=new Participante(jt_Nombre_Registrar.getText(),jp_password_Registrar.getText());
+            escribirbin(p);
+
+        }else{
+            Admin a=new Admin(0,jt_Nombre_Registrar.getText(),jp_password_Registrar.getText());
+            escribirbin(a);
+        }
+            jt_Nombre_Registrar.setText("");
+            jd_Registrar.setVisible(false);
+            this.pack();
+            this.setLocationRelativeTo(null);
+            this.setVisible(true);
+            JOptionPane.showMessageDialog(null, "Se registro con exito");
+    }//GEN-LAST:event_bt_registrar_RegistrarMouseClicked
+
+    public void escribirbin(Usuario us){
+        Usuario temp;
+        try {
+                    FileOutputStream fos = new FileOutputStream(archivo, false);
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);
+                    oos.writeObject(us);
+                    oos.close();
+                    fos.close();
+            } catch (Exception e) {
+
+            }
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -491,6 +537,8 @@ public class Login extends javax.swing.JFrame {
         });
     }
 
+    File archivo = new File("./Usuarios.dat");
+    ArrayList<Participante> part = new ArrayList();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_cerrarTorneo_menuAdmin;
     private javax.swing.JButton bt_crearTorneo_menuAdmin;
