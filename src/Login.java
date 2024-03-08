@@ -10,13 +10,11 @@ import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JFrame {
 
-    
     public Login() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -167,6 +165,11 @@ public class Login extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jl_usuariosTorneo_menuAdmin);
 
         bt_cerrarTorneo_menuAdmin.setText("Cerrar Torneo");
+        bt_cerrarTorneo_menuAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bt_cerrarTorneo_menuAdminMouseClicked(evt);
+            }
+        });
 
         bt_marcarGanador_menuAdmin.setText("Marcar Ganador");
         bt_marcarGanador_menuAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -330,6 +333,16 @@ public class Login extends javax.swing.JFrame {
         jScrollPane5.setViewportView(jl_torneosDisp_menuParticipante);
 
         bt_unirseTorneo_menuParticipante.setText("Unirse a torneo");
+        bt_unirseTorneo_menuParticipante.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bt_unirseTorneo_menuParticipanteMouseClicked(evt);
+            }
+        });
+        bt_unirseTorneo_menuParticipante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_unirseTorneo_menuParticipanteActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Salir");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -496,31 +509,35 @@ public class Login extends javax.swing.JFrame {
 
     private void jb_RegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jb_RegistrarMouseClicked
         this.setVisible(false);
-        jd_Registrar.pack(); 
+        jd_Registrar.pack();
         jd_Registrar.setLocationRelativeTo(this);
         jd_Registrar.setVisible(true);
     }//GEN-LAST:event_jb_RegistrarMouseClicked
 
     private void bt_crearTorney_crearTorneyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_crearTorney_crearTorneyMouseClicked
-        Torneo t=new Torneo(tf_nombreTorneo_crearTorney.getText(),true ,false , part);
-    }//GEN-LAST:event_bt_crearTorney_crearTorneyMouseClicked
+        Torneo t = new Torneo(tf_nombreTorneo_crearTorney.getText(), true, false, part);
+
+        escribirbintorneo(t);
+        ((Admin) usuario).setCantTorney(((Admin) usuario).getCantTorney() + 1);
+        jd_crearTorney.setVisible(false);
+        tabla();    }//GEN-LAST:event_bt_crearTorney_crearTorneyMouseClicked
 
     private void bt_registrar_RegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_registrar_RegistrarMouseClicked
-        if(chb_participante_Registrar.isSelected()){
-            Participante p=new Participante(jt_Nombre_Registrar.getText(),jp_password_Registrar.getText());
+        if (chb_participante_Registrar.isSelected()) {
+            Participante p = new Participante(jt_Nombre_Registrar.getText(), jp_password_Registrar.getText());
             escribirbin(p);
             usuarios.add(p);
-        }else{
-            Admin a=new Admin(0,jt_Nombre_Registrar.getText(),jp_password_Registrar.getText());
+        } else {
+            Admin a = new Admin(0, jt_Nombre_Registrar.getText(), jp_password_Registrar.getText());
             escribirbin(a);
             usuarios.add(a);
         }
-            jt_Nombre_Registrar.setText("");
-            jd_Registrar.setVisible(false);
-            this.pack();
-            this.setLocationRelativeTo(null);
-            this.setVisible(true);
-            JOptionPane.showMessageDialog(null, "Se registro con exito");
+        jt_Nombre_Registrar.setText("");
+        jd_Registrar.setVisible(false);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+        JOptionPane.showMessageDialog(null, "Se registro con exito");
     }//GEN-LAST:event_bt_registrar_RegistrarMouseClicked
 
     private void bt_marcarGanador_menuAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_marcarGanador_menuAdminMouseClicked
@@ -528,38 +545,33 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_marcarGanador_menuAdminMouseClicked
 
     private void jb_Registrar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jb_Registrar1MouseClicked
-        boolean existe=false;
-        boolean admin=false;
-           cargarbin();
-           for (Usuario s : usuarios) {
-               if(s.getNombre().equals(jt_nombre.getText())&&s.getPassword().equals(jp_password.getText())){
-                   existe=true;
-                   usuario.setNombre(s.getNombre());
-                   if(s instanceof Admin){
-                       admin=true;
-                   }
-                   break;
-               }else{
-                   existe=false;
-                   admin=false;
-               }
-           }
-           if(existe==false){
-               JOptionPane.showMessageDialog(null, "No existe el usuario");
-           }else{
-               JOptionPane.showMessageDialog(null, "Ingresando");
-               if(admin==false){
-                   lb_usuarioIngresado_menuAdmin.setText(usuario.getNombre());
-                   lb_usuarioLogin_crearTorney.setText(usuario.getNombre());
-                   this.setVisible(false);
-                   jd_menuParticipante.pack();
-                   jd_menuParticipante.setLocationRelativeTo(this);
-                   jd_menuParticipante.setVisible(true);
-               }else{
-                   tabla();
-               }
+        boolean existe = false;
+        boolean admin = false;
+        cargarbin();
+        for (Usuario s : usuarios) {
+            if (s.getNombre().equals(jt_nombre.getText()) && s.getPassword().equals(jp_password.getText())) {
+                existe = true;
+                usuario = s;
+                if (s instanceof Admin) {
+                    admin = true;
+                }
+                break;
+            } else {
+                existe = false;
+                admin = false;
+            }
+        }
+        if (existe == false) {
+            JOptionPane.showMessageDialog(null, "No existe el usuario");
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingresando");
+            if (admin == false) {
+                tablaPers();
+            } else {
+                tabla();
+            }
 
-           }
+        }
     }//GEN-LAST:event_jb_Registrar1MouseClicked
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
@@ -570,30 +582,87 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void bt_crearTorneo_menuAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_crearTorneo_menuAdminMouseClicked
-        Torneo t = new Torneo(tf_nombreTorneo_crearTorney.getText(), true, false, part);
-
-        escribirbintorneo(t);
-        ((Admin) usuario).setCantTorney(((Admin) usuario).getCantTorney() + 1);
-        jd_crearTorney.setVisible(false);
-        tabla();
+        jd_menuAdmin.setVisible(false);
+        jd_crearTorney.pack();
+        jd_crearTorney.setLocationRelativeTo(this);
+        jd_crearTorney.setVisible(true);
     }//GEN-LAST:event_bt_crearTorneo_menuAdminMouseClicked
 
-    public void escribirbin(Usuario us){
+    private void bt_cerrarTorneo_menuAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_cerrarTorneo_menuAdminMouseClicked
+        if (jl_listaTorneos_menuAdmin.getSelectedIndex() >= 0) {
+            for (Torneo t : torneos) {
+                if (t.equals(jl_listaTorneos_menuAdmin.getSelectedValue())) {
+                    t.setTerminado(false);
+                    System.out.println(t.isTerminado());
+                    JOptionPane.showMessageDialog(null, "Torneo cerrado con exito");
+                    break;
+                }
+                escribirbintorneo(t);
+            }
+
+        }
+    }//GEN-LAST:event_bt_cerrarTorneo_menuAdminMouseClicked
+
+    private void bt_unirseTorneo_menuParticipanteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_unirseTorneo_menuParticipanteMouseClicked
+        if (jl_torneosDisp_menuParticipante.getSelectedIndex() >= 0) {
+            cargarbintorneo();
+            for (Torneo t : torneos) {
+                if (t.equals(jl_torneosDisp_menuParticipante.getSelectedValue())) {
+                    JOptionPane.showMessageDialog(null, "Bienvenido al torneo");
+                    if (t.isTerminado() == false) {
+                        t.getParticipantes().add((Participante) usuario);
+                        JOptionPane.showMessageDialog(null, "Bienvenido al torneo");
+                        break;
+                    }
+                }
+            }
+
+        }
+    }//GEN-LAST:event_bt_unirseTorneo_menuParticipanteMouseClicked
+
+    private void bt_unirseTorneo_menuParticipanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_unirseTorneo_menuParticipanteActionPerformed
+        if (jl_torneosDisp_menuParticipante.getSelectedIndex() >= 0) {
+            cargarbintorneo();
+            for (Torneo t : torneos) {
+                if (t.equals(jl_torneosDisp_menuParticipante.getSelectedValue())) {
+                    JOptionPane.showMessageDialog(null, "Bienvenido al torneo");
+                    if (t.isTerminado() == false) {
+                        t.getParticipantes().add((Participante) usuario);
+                        JOptionPane.showMessageDialog(null, "Bienvenido al torneo");
+                        break;
+                    }
+                }
+            }
+
+        }    }//GEN-LAST:event_bt_unirseTorneo_menuParticipanteActionPerformed
+
+    public void escribirbin(Usuario us) {
         Usuario temp;
         try {
-                    FileOutputStream fos = new FileOutputStream(archivo, false);
-                    ObjectOutputStream oos = new ObjectOutputStream(fos);
-                    oos.writeObject(us);
-                    oos.close();
-                    fos.close();
-            } catch (Exception e) {
+            FileOutputStream fos = new FileOutputStream(archivo, true);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(us);
+            oos.close();
+            fos.close();
+        } catch (Exception e) {
 
-            }
+        }
     }
 
-    public void escribirbintorneo(Torneo t) {
+    public void escribirbintorneor(Torneo t) {
         try {
             FileOutputStream fos = new FileOutputStream(archivoT, false);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(t);
+            oos.close();
+            fos.close();
+        } catch (Exception e) {
+
+        }
+    }
+     public void escribirbintorneo(Torneo t) {
+        try {
+            FileOutputStream fos = new FileOutputStream(archivoT, true);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(t);
             oos.close();
@@ -639,7 +708,30 @@ public class Login extends javax.swing.JFrame {
 
         }
     }
-    
+
+    public void tablaPers() {
+        cargarbintorneo();
+        lb_usuarioLogin_menuParticipante.setText(usuario.getNombre());
+        this.setVisible(false);
+        jd_menuParticipante.pack();
+        jd_menuParticipante.setLocationRelativeTo(this);
+        jd_menuParticipante.setVisible(true);
+
+        DefaultListModel modelo1 = (DefaultListModel) jl_torneosCerrados_menuParticipante.getModel();
+        DefaultListModel modelo = (DefaultListModel) jl_torneosDisp_menuParticipante.getModel();
+        modelo.clear();
+        modelo1.clear();
+        for (Torneo t : torneos) {
+            if (t.isTerminado() == false) {
+                modelo1.addElement(t);
+            } else {
+                modelo.addElement(t);
+            }
+        }
+        jl_torneosCerrados_menuParticipante.setModel(modelo1);
+        jl_torneosDisp_menuParticipante.setModel(modelo);
+    }
+
     public void tabla() {
         lb_usuarioIngresado_menuAdmin.setText(usuario.getNombre());
         lb_usuarioLogin_crearTorney.setText(usuario.getNombre());
@@ -647,9 +739,10 @@ public class Login extends javax.swing.JFrame {
         jd_menuAdmin.pack();
         jd_menuAdmin.setLocationRelativeTo(this);
         jd_menuAdmin.setVisible(true);
-        if(archivoT.exists()){
+        if (archivoT.exists()) {
             cargarbintorneo();
-            DefaultListModel modelo=(DefaultListModel)jl_listaTorneos_menuAdmin.getModel();
+            DefaultListModel modelo = (DefaultListModel) jl_listaTorneos_menuAdmin.getModel();
+            modelo.clear();
             for (Torneo t : torneos) {
                 modelo.addElement(t);
             }
@@ -657,8 +750,7 @@ public class Login extends javax.swing.JFrame {
 
         }
     }
-    
-    
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

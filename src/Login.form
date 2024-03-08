@@ -278,6 +278,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cerrar Torneo"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bt_cerrarTorneo_menuAdminMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="bt_marcarGanador_menuAdmin">
               <Properties>
@@ -585,6 +588,10 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Unirse a torneo"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bt_unirseTorneo_menuParticipanteMouseClicked"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_unirseTorneo_menuParticipanteActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButton1">
               <Properties>
