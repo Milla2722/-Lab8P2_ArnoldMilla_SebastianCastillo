@@ -56,5 +56,10 @@ public class Torneo implements Serializable{
         this.p = p;
     }
 
+    @Override
+    public String toString() {
+        return nombre;
+    }
 
+    
 }
