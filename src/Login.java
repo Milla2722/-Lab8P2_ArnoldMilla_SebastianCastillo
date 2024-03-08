@@ -631,6 +631,7 @@ public class Login extends javax.swing.JFrame {
         if (jl_torneosDisp_menuParticipante.getSelectedIndex() >= 0) {
             cargarbintorneo();
             for (Torneo t : torneos) {
+                ///esto no da fsr
                 if (t.equals(jl_torneosDisp_menuParticipante.getSelectedValue())) {
                     JOptionPane.showMessageDialog(null, "Bienvenido al torneo");
                     if (t.isTerminado() == false) {
