@@ -64,6 +64,7 @@ public class Login extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         jl_torneosDisp_menuParticipante = new javax.swing.JList<>();
         bt_unirseTorneo_menuParticipante = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jt_nombre = new javax.swing.JTextField();
@@ -153,6 +154,11 @@ public class Login extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(102, 51, 255));
 
         bt_crearTorneo_menuAdmin.setText("Crear Torneo");
+        bt_crearTorneo_menuAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bt_crearTorneo_menuAdminMouseClicked(evt);
+            }
+        });
 
         jl_listaTorneos_menuAdmin.setModel(new DefaultListModel());
         jScrollPane1.setViewportView(jl_listaTorneos_menuAdmin);
@@ -171,7 +177,7 @@ public class Login extends javax.swing.JFrame {
 
         jLabel5.setText("Torneos");
 
-        jLabel6.setText("Lista Personas");
+        jLabel6.setText("Personas dentro torneo");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -203,7 +209,7 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel6)
-                .addGap(205, 205, 205))
+                .addGap(179, 179, 179))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -325,6 +331,13 @@ public class Login extends javax.swing.JFrame {
 
         bt_unirseTorneo_menuParticipante.setText("Unirse a torneo");
 
+        jButton1.setText("Salir");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -352,7 +365,9 @@ public class Login extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(67, 67, 67)
                 .addComponent(bt_unirseTorneo_menuParticipante)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(85, 85, 85))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -369,9 +384,15 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addComponent(bt_unirseTorneo_menuParticipante)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(bt_unirseTorneo_menuParticipante)
+                        .addContainerGap(31, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(23, 23, 23))))
         );
 
         javax.swing.GroupLayout jd_menuParticipanteLayout = new javax.swing.GroupLayout(jd_menuParticipante.getContentPane());
@@ -535,15 +556,27 @@ public class Login extends javax.swing.JFrame {
                    jd_menuParticipante.setLocationRelativeTo(this);
                    jd_menuParticipante.setVisible(true);
                }else{
-                   this.setVisible(false);
-                   lb_usuarioLogin_menuParticipante.setText(usuario.getNombre());
-                   jd_menuAdmin.pack(); 
-                   jd_menuAdmin.setLocationRelativeTo(this);
-                   jd_menuAdmin.setVisible(true);
+                   tabla();
                }
 
            }
     }//GEN-LAST:event_jb_Registrar1MouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        jd_menuParticipante.setVisible(false);
+        this.pack();
+        this.setLocationRelativeTo(jd_menuParticipante);
+        this.setVisible(true);
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void bt_crearTorneo_menuAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_crearTorneo_menuAdminMouseClicked
+        Torneo t = new Torneo(tf_nombreTorneo_crearTorney.getText(), true, false, part);
+
+        escribirbintorneo(t);
+        ((Admin) usuario).setCantTorney(((Admin) usuario).getCantTorney() + 1);
+        jd_crearTorney.setVisible(false);
+        tabla();
+    }//GEN-LAST:event_bt_crearTorneo_menuAdminMouseClicked
 
     public void escribirbin(Usuario us){
         Usuario temp;
@@ -557,7 +590,19 @@ public class Login extends javax.swing.JFrame {
 
             }
     }
-    
+
+    public void escribirbintorneo(Torneo t) {
+        try {
+            FileOutputStream fos = new FileOutputStream(archivoT, false);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(t);
+            oos.close();
+            fos.close();
+        } catch (Exception e) {
+
+        }
+    }
+
     public void cargarbin() {
         usuarios = new ArrayList();
         part = new ArrayList();
@@ -576,6 +621,43 @@ public class Login extends javax.swing.JFrame {
 
         }
     }
+
+    public void cargarbintorneo() {
+        torneos = new ArrayList();
+        try {
+            FileInputStream fis = new FileInputStream(archivoT);
+            ObjectInputStream lectura = null;
+            Torneo temp;
+            while (fis.available() > 0) {
+                lectura = new ObjectInputStream(fis);
+                temp = (Torneo) lectura.readObject();
+                torneos.add(temp);
+            }
+            lectura.close();
+            fis.close();
+        } catch (Exception e) {
+
+        }
+    }
+    
+    public void tabla() {
+        lb_usuarioIngresado_menuAdmin.setText(usuario.getNombre());
+        lb_usuarioLogin_crearTorney.setText(usuario.getNombre());
+        this.setVisible(false);
+        jd_menuAdmin.pack();
+        jd_menuAdmin.setLocationRelativeTo(this);
+        jd_menuAdmin.setVisible(true);
+        if(archivoT.exists()){
+            cargarbintorneo();
+            DefaultListModel modelo=(DefaultListModel)jl_listaTorneos_menuAdmin.getModel();
+            for (Torneo t : torneos) {
+                modelo.addElement(t);
+            }
+            jl_listaTorneos_menuAdmin.setModel(modelo);
+
+        }
+    }
+    
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -614,6 +696,7 @@ public class Login extends javax.swing.JFrame {
     ArrayList<Usuario> usuarios = new ArrayList();
     ArrayList<Participante> part = new ArrayList();
     Usuario usuario = new Usuario();
+    ArrayList<Torneo> torneos = new ArrayList();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_cerrarTorneo_menuAdmin;
     private javax.swing.JButton bt_crearTorneo_menuAdmin;
@@ -624,6 +707,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox chb_Administrador_Registrar;
     private javax.swing.JCheckBox chb_participante_Registrar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
