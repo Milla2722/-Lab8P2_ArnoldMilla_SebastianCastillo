@@ -1,6 +1,8 @@
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
@@ -158,9 +160,14 @@ public class Login extends javax.swing.JFrame {
         jl_usuariosTorneo_menuAdmin.setModel(new DefaultListModel());
         jScrollPane2.setViewportView(jl_usuariosTorneo_menuAdmin);
 
-        bt_cerrarTorneo_menuAdmin.setText("jButton2");
+        bt_cerrarTorneo_menuAdmin.setText("Cerrar Torneo");
 
-        bt_marcarGanador_menuAdmin.setText("jButton1");
+        bt_marcarGanador_menuAdmin.setText("Marcar Ganador");
+        bt_marcarGanador_menuAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bt_marcarGanador_menuAdminMouseClicked(evt);
+            }
+        });
 
         jLabel5.setText("Torneos");
 
@@ -175,11 +182,11 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(bt_crearTorneo_menuAdmin)
                 .addGap(39, 39, 39))
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(101, 101, 101)
+                .addGap(94, 94, 94)
                 .addComponent(bt_cerrarTorneo_menuAdmin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(bt_marcarGanador_menuAdmin)
-                .addGap(209, 209, 209))
+                .addGap(192, 192, 192))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -262,19 +269,16 @@ public class Login extends javax.swing.JFrame {
                 .addContainerGap(430, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(lb_usuarioLogin_crearTorney, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(123, 123, 123))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(bt_crearTorney_crearTorney)
-                        .addGap(111, 111, 111))))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lb_usuarioLogin_crearTorney, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bt_crearTorney_crearTorney))
+                .addGap(111, 111, 111))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(lb_usuarioLogin_crearTorney)
+                .addContainerGap()
+                .addComponent(lb_usuarioLogin_crearTorney, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(57, 57, 57)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -408,6 +412,11 @@ public class Login extends javax.swing.JFrame {
         jb_Registrar1.setBackground(new java.awt.Color(102, 255, 51));
         jb_Registrar1.setForeground(new java.awt.Color(0, 0, 0));
         jb_Registrar1.setText("Ingresar");
+        jb_Registrar1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jb_Registrar1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -479,10 +488,11 @@ public class Login extends javax.swing.JFrame {
         if(chb_participante_Registrar.isSelected()){
             Participante p=new Participante(jt_Nombre_Registrar.getText(),jp_password_Registrar.getText());
             escribirbin(p);
-
+            usuarios.add(p);
         }else{
             Admin a=new Admin(0,jt_Nombre_Registrar.getText(),jp_password_Registrar.getText());
             escribirbin(a);
+            usuarios.add(a);
         }
             jt_Nombre_Registrar.setText("");
             jd_Registrar.setVisible(false);
@@ -491,6 +501,49 @@ public class Login extends javax.swing.JFrame {
             this.setVisible(true);
             JOptionPane.showMessageDialog(null, "Se registro con exito");
     }//GEN-LAST:event_bt_registrar_RegistrarMouseClicked
+
+    private void bt_marcarGanador_menuAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_marcarGanador_menuAdminMouseClicked
+        JOptionPane.showMessageDialog(jd_menuAdmin, "Gano");
+    }//GEN-LAST:event_bt_marcarGanador_menuAdminMouseClicked
+
+    private void jb_Registrar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jb_Registrar1MouseClicked
+        boolean existe=false;
+        boolean admin=false;
+           cargarbin();
+           for (Usuario s : usuarios) {
+               if(s.getNombre().equals(jt_nombre.getText())&&s.getPassword().equals(jp_password.getText())){
+                   existe=true;
+                   usuario.setNombre(s.getNombre());
+                   if(s instanceof Admin){
+                       admin=true;
+                   }
+                   break;
+               }else{
+                   existe=false;
+                   admin=false;
+               }
+           }
+           if(existe==false){
+               JOptionPane.showMessageDialog(null, "No existe el usuario");
+           }else{
+               JOptionPane.showMessageDialog(null, "Ingresando");
+               if(admin==false){
+                   lb_usuarioIngresado_menuAdmin.setText(usuario.getNombre());
+                   lb_usuarioLogin_crearTorney.setText(usuario.getNombre());
+                   this.setVisible(false);
+                   jd_menuParticipante.pack();
+                   jd_menuParticipante.setLocationRelativeTo(this);
+                   jd_menuParticipante.setVisible(true);
+               }else{
+                   this.setVisible(false);
+                   lb_usuarioLogin_menuParticipante.setText(usuario.getNombre());
+                   jd_menuAdmin.pack(); 
+                   jd_menuAdmin.setLocationRelativeTo(this);
+                   jd_menuAdmin.setVisible(true);
+               }
+
+           }
+    }//GEN-LAST:event_jb_Registrar1MouseClicked
 
     public void escribirbin(Usuario us){
         Usuario temp;
@@ -503,6 +556,25 @@ public class Login extends javax.swing.JFrame {
             } catch (Exception e) {
 
             }
+    }
+    
+    public void cargarbin() {
+        usuarios = new ArrayList();
+        part = new ArrayList();
+        try {
+            FileInputStream fis = new FileInputStream(archivo);
+            ObjectInputStream lectura = null;
+            Usuario temp;
+            while (fis.available() > 0) {
+                lectura = new ObjectInputStream(fis);
+                temp = (Usuario) lectura.readObject();
+                usuarios.add(temp);
+            }
+            lectura.close();
+            fis.close();
+        } catch (Exception e) {
+
+        }
     }
     
     public static void main(String args[]) {
@@ -538,7 +610,10 @@ public class Login extends javax.swing.JFrame {
     }
 
     File archivo = new File("./Usuarios.dat");
+    File archivoT = new File("./Torneos.dat");
+    ArrayList<Usuario> usuarios = new ArrayList();
     ArrayList<Participante> part = new ArrayList();
+    Usuario usuario = new Usuario();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_cerrarTorneo_menuAdmin;
     private javax.swing.JButton bt_crearTorneo_menuAdmin;
