@@ -8,6 +8,10 @@ public class Participante extends Usuario{
     public Participante() {
     }
 
+    public Participante(String nombre, String password) {
+        super(nombre, password);
+    }
+    
     public Participante(ArrayList<Torneo> torneosPart, ArrayList<Torneo> torneosWin, String nombre, String password) {
         super(nombre, password);
         this.torneosPart = torneosPart;

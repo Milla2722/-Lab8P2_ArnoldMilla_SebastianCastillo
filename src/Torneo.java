@@ -1,11 +1,11 @@
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Torneo {
+public class Torneo implements Serializable{
     private String nombre;
     private boolean terminado, entry;
     private ArrayList<Participante> participantes;
-
+    private Participante p;
     public Torneo() {
     }
 
@@ -47,6 +47,14 @@ public class Torneo {
     public void setParticipantes(ArrayList<Participante> participantes) {
         this.participantes = participantes;
     }
-    
-    
+
+    public Participante getP() {
+        return p;
+    }
+
+    public void setP(Participante p) {
+        this.p = p;
+    }
+
+
 }
