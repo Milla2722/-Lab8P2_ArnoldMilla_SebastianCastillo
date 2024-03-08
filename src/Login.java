@@ -595,9 +595,16 @@ public class Login extends javax.swing.JFrame {
                     t.setTerminado(false);
                     System.out.println(t.isTerminado());
                     JOptionPane.showMessageDialog(null, "Torneo cerrado con exito");
+                    escribirbintorneor(t);
                     break;
                 }
-                escribirbintorneo(t);
+            }
+             for (Torneo t : torneos) {
+                 if (t.equals(jl_listaTorneos_menuAdmin.getSelectedValue())) {
+                     
+                 }else{
+                     escribirbintorneo(t);
+                 }
             }
 
         }
@@ -648,10 +655,9 @@ public class Login extends javax.swing.JFrame {
 
         }
     }
-
-    public void escribirbintorneor(Torneo t) {
+     public void escribirbintorneo(Torneo t) {
         try {
-            FileOutputStream fos = new FileOutputStream(archivoT, false);
+            FileOutputStream fos = new FileOutputStream(archivoT, true);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(t);
             oos.close();
@@ -660,9 +666,9 @@ public class Login extends javax.swing.JFrame {
 
         }
     }
-     public void escribirbintorneo(Torneo t) {
+      public void escribirbintorneor(Torneo t) {
         try {
-            FileOutputStream fos = new FileOutputStream(archivoT, true);
+            FileOutputStream fos = new FileOutputStream(archivoT, false);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(t);
             oos.close();
